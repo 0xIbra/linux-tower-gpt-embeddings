@@ -1,4 +1,4 @@
-# Linux Tower
+# Linux Tower - GPT embeddings experiment
 
 
 **Linux Tower** is a web interface designed for server application management and monitoring, focusing on applications such as Apache, NGINX, and Certbot. It provides features like application monitoring, alerting, and custom log alerts.
