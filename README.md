@@ -8,9 +8,8 @@ This project is a work-in-progress and serves as an experiment for context injec
 ## Technologies
 
 Linux Tower is built using:
-- Python: For the backend, possibly a Flask-based API.
+- Python: For the backend, Flask-based API.
 - Vue: For the frontend.
-- TypeScript: Used in some parts of the project.
 
 ## Current Status
 
