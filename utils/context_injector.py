@@ -1,7 +1,6 @@
 from openai.embeddings_utils import get_embedding, cosine_similarity
 import pandas as pd
 import json
-import os
 
 
 EMBEDDING_MODEL = "text-embedding-ada-002"

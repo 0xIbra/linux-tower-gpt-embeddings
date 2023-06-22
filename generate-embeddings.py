@@ -2,13 +2,8 @@ from argparse import ArgumentParser
 from openai.embeddings_utils import get_embedding
 from utils import CodeReader, CodeSummarizer
 import pandas as pd
-import numpy as np
 import openai
-import math
 import glob
-import pathlib
-import redbaron
-import re
 import os
 
 
