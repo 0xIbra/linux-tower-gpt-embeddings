@@ -32,7 +32,7 @@ def gpt_request(prompt: str, model=GPT_MODEL):
 def prompt_gpt(text: str, history: list):
     global CONTEXT_INJECTOR
 
-    context_data = CONTEXT_INJECTOR.get_context_for_prompt(text, 10)
+    context_data = CONTEXT_INJECTOR.get_context_for_prompt(text, 20)
     context_data = [f"{x['code']}" for i, x in context_data.iterrows()]
     if len(context_data) > 0:
         context = '\n'.join(context_data)
