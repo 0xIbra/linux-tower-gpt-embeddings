@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 from openai.embeddings_utils import get_embedding
+from utils import CodeReader
 import pandas as pd
 import numpy as np
 import openai
@@ -13,6 +14,7 @@ import os
 
 ########### OPENAI ###########
 EMBEDDING_MODEL = "text-embedding-ada-002"
+GPT_MODEL = "gpt-3.5-turbo-0613"
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 
@@ -37,12 +39,14 @@ def main():
     files = [y for x in os.walk(directory) for ext in extensions for y in glob.glob(os.path.join(x[0], '*'+ext))]
 
     for file_path in files:
-        with open(file_path, "r") as f:
-            red = redbaron.RedBaron(f.read())
+        reader = CodeReader(file_path)
+        code = reader.get_full_code()
 
-        for i, node in enumerate(red):
-            print(str(node))
-            exit()
+        data_item = {
+            'filename': os.path.basename(file_path),
+            'filepath': file_path,
+            'code': code
+        }
 
         exit()
 
