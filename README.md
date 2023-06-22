@@ -20,5 +20,3 @@ Currently, the project has implemented various API endpoints for interacting wit
 This project serves as a proof-of-concept for using GPT and code embeddings to develop software. The aim is to use GPT to develop the remaining features of the project.
 
 As this is an experimental approach, it's unclear what the results will be. The project could end up being a success, demonstrating the potential of GPT and code embeddings in software development. On the other hand, it could also highlight the limitations of this approach.
-
-The progress of this experiment can be followed [here](https://github.com/users/0xIbra/projects/7).
