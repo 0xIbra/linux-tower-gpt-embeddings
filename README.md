@@ -1,12 +1,12 @@
 # Linux Tower - GPT embeddings experiment
 
 
-**Linux Tower** is a web interface designed for server application management and monitoring, focusing on applications such as Apache, NGINX, and Certbot. It provides features like application monitoring, alerting, and custom log alerts.
+[**Linux Tower**](https://github.com/0xIbra/linux-tower) is a web interface designed for server application management and monitoring, focusing on applications such as Apache, NGINX, and Certbot. It provides features like application monitoring, alerting, and custom log alerts.
 
 ## Technologies
 
 Linux Tower is built using:
-- Python: For the backend, Flask-based API.
+- Python 3: For the backend, Flask-based API.
 - Vue: For the frontend.
 
 ## Current Status
