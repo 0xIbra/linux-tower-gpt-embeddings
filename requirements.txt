@@ -2,3 +2,4 @@ redbaron
 openai
 gradio
 pandas
+langchain
