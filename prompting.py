@@ -1,68 +1,48 @@
-from utils.context_injector import ContextInjector
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores import DeepLake
+from langchain.chat_models import ChatOpenAI
+from langchain.chains import ConversationalRetrievalChain
 import gradio as gr
-import openai
-import json
 import os
 
 
-openai.api_key = os.environ.get('OPENAI_API_KEY')
-GPT_MODEL = 'gpt-3.5-turbo-16k'
-GPT_ROLE = """
-You are an expert python coder, for each task, generate python code without explanations or comments.
-Provide the filepath to where the code goes as well and wrap the code around ```python```.
-""".strip()
+embeddings = OpenAIEmbeddings(disallowed_special=())
 
-CONTEXT_INJECTOR = None
+db = DeepLake(
+    dataset_path="hub://ibra/linux-tower-experiment",
+    read_only=True,
+    embedding_function=embeddings
+)
 
+retriever = db.as_retriever()
+retriever.search_kwargs["distance_metric"] = "cos"
+retriever.search_kwargs["fetch_k"] = 100
+retriever.search_kwargs["maximal_marginal_relevance"] = True
+retriever.search_kwargs["k"] = 10
 
-def gpt_request(prompt: str, model=GPT_MODEL):
-    response = openai.ChatCompletion.create(
-        model=model,
-        messages=[
-            {'role': 'system', 'content': GPT_ROLE},
-            {'role': 'user', 'content': prompt}
-        ]
-    )
+chat_history = []
 
-    print('prompt usage: ', response['usage'])
-
-    return response['choices'][0]['message']['content']
+model = ChatOpenAI()
+qa = ConversationalRetrievalChain.from_llm(model, retriever=retriever)
 
 
-def prompt_gpt(text: str, history: list):
-    global CONTEXT_INJECTOR
+def prompt(text: str, history: list):
+    global qa
+    global chat_history
 
-    context_data = CONTEXT_INJECTOR.get_context_for_prompt(text, 20)
-    context_data = [f"{x['code']}" for i, x in context_data.iterrows()]
-    if len(context_data) > 0:
-        context = '\n'.join(context_data)
-        text = f"Context:\n{context}\n\nQuestion:\n{text}"
-    
-    result = gpt_request(text)
+    result = qa({"question": text, "chat_history": chat_history})
+    chat_history.append((text, result["answer"]))
 
-    history = history or []
-    history.append((text, result))
-
-    return history, history
+    return chat_history, chat_history
 
 
-def main():
-    global DF
-    global CONTEXT_INJECTOR
+css = "gradio-app {background-color: #111 !important;}"
+with gr.Blocks(css=css) as demo:
+    gr.Markdown("<h1>Linux Tower - LangChain experiment</h1>")
+    chatbot = gr.Chatbot()
+    message = gr.Textbox(placeholder="What do you have in mind for linux tower ?", lines=5)
+    state = gr.State()
+    submit = gr.Button("Let's get to work !")
+    submit.click(prompt, inputs=[message, state], outputs=[chatbot, state])
 
-    CONTEXT_INJECTOR = ContextInjector()
-
-    css = "gradio-app {background-color: #111 !important;}"
-    with gr.Blocks(css=css) as demo:
-        gr.Markdown("<h1>Linux Tower - GPT Embedding autonomy experiment</h1>")
-        chatbot = gr.Chatbot()
-        message = gr.Textbox(placeholder="What do you have in mind for linux tower ?", lines=5)
-        state = gr.State()
-        submit = gr.Button("Let's get to work !")
-        submit.click(prompt_gpt, inputs=[message, state], outputs=[chatbot, state])
-
-    demo.launch()
-
-
-if __name__ == '__main__':
-    main()
+demo.launch()
