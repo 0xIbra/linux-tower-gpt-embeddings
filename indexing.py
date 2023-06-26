@@ -10,6 +10,9 @@ embeddings = OpenAIEmbeddings(disallowed_special=())
 root_dir = "./linux-tower"
 docs = []
 for dirpath, dirnames, filenames in os.walk(root_dir):
+    if '/.git' in dirpath:
+        continue
+
     for file in filenames:
         try:
             loader = TextLoader(os.path.join(dirpath, file), encoding="utf-8")
