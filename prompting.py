@@ -16,13 +16,13 @@ db = DeepLake(
 
 retriever = db.as_retriever()
 retriever.search_kwargs["distance_metric"] = "cos"
-retriever.search_kwargs["fetch_k"] = 100
+retriever.search_kwargs["fetch_k"] = 20
 retriever.search_kwargs["maximal_marginal_relevance"] = True
-retriever.search_kwargs["k"] = 10
+retriever.search_kwargs["k"] = 20
 
 chat_history = []
 
-model = ChatOpenAI()
+model = ChatOpenAI(model="gpt-3.5-turbo-16k", temperature=0.0)
 qa = ConversationalRetrievalChain.from_llm(model, retriever=retriever)
 
 
