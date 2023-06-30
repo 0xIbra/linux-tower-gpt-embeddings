@@ -14,6 +14,8 @@ class CodeAgent:
     def run(self):
         self.__analyze_objective()
 
+        print('PLAN: ', self.__plan)
+
     def __analyze_objective(self):
         context = self.__context_injector.get_context_for_prompt(self.__objective, max_context_items=20)
 
@@ -30,14 +32,14 @@ class CodeAgent:
 
         sys_msg = """
         You are a expert coder, your job is to the best of your ability to establish a step by step detailed plan to perform the task given by the user.
+        No need to write any tests, focus on the objective.
+        Make the plan parseable by a program as this plan will be parsed and handled by a gpt agent.
         """.strip()
 
         messages = [
             {'role': 'system', 'content': sys_msg},
             {'role': 'user', 'content': message}
         ]
-        plan = GPTClient.prompt_gpt_api(messages)
 
-        print('PLAN:', plan)
-        exit()
+        self.__plan = GPTClient.prompt_gpt_api(messages)
 
