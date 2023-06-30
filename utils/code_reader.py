@@ -8,16 +8,16 @@ class CodeReader:
     """
 
     def __init__(self, filepath: str):
-        self.__filepath = filepath
-        if not os.path.isfile(self.__filepath):
-            raise Exception(f'file "{self.__filepath}" was not found.')
+        self.filepath = filepath
+        if not os.path.isfile(self.filepath):
+            raise Exception(f'file "{self.filepath}" was not found.')
 
-        with open(self.__filepath, 'r') as f:
-            self.__code = f.read()
-            self.__red = RedBaron(self.__code)
+        with open(self.filepath, 'r') as f:
+            self.code = f.read()
+            self.red = RedBaron(self.code)
 
     def is_class(self):
-        for node in self.__red:
+        for node in self.red:
             if node.type == "class":
                 return True
 
@@ -25,12 +25,12 @@ class CodeReader:
 
     def get_functions(self):
         func_strs = []
-        for node in self.__red:
+        for node in self.red:
             pass
 
     def get_full_code(self):
         code = ""
-        for node in self.__red:
+        for node in self.red:
             if node.type == "comment":
                 continue
 
