@@ -1,4 +1,5 @@
-from utils import ContextInjector, GPTClient
+from utils import ContextInjector, GPTClient, Planner
+
 
 class CodeAgent:
     """
@@ -8,38 +9,12 @@ class CodeAgent:
     """
 
     def __init__(self, objective: str):
-        self.__objective = objective
-        self.__context_injector = ContextInjector()
+        self.objective = objective
+        self.context_injector = ContextInjector()
+        self.planner = Planner()
 
     def run(self):
-        self.__analyze_objective()
+        context = self.context_injector.get_context_for_prompt(self.objective, max_context_items=20)
+        self.plan = self.planner.analyze_and_make_plan(self.objective, context)
 
-        print('PLAN: ', self.__plan)
-
-    def __analyze_objective(self):
-        context = self.__context_injector.get_context_for_prompt(self.__objective, max_context_items=20)
-
-        message = f"""
-        Objective:
-        {self.__objective}
-
-        Context:
-        {context}
-
-        ---
-        Analyze the objective above and make a step by step plan of all actions required in all the code files to achieve the end result.
-        """.strip()
-
-        sys_msg = """
-        You are a expert coder, your job is to the best of your ability to establish a step by step detailed plan to perform the task given by the user.
-        No need to write any tests, focus on the objective.
-        Make the plan parseable by a program as this plan will be parsed and handled by a gpt agent.
-        """.strip()
-
-        messages = [
-            {'role': 'system', 'content': sys_msg},
-            {'role': 'user', 'content': message}
-        ]
-
-        self.__plan = GPTClient.prompt_gpt_api(messages)
-
+        print('PLAN: ', self.plan)
