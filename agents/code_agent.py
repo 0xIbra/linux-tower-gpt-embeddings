@@ -17,4 +17,4 @@ class CodeAgent:
         context = self.context_injector.get_context_for_prompt(self.objective, max_context_items=20)
         self.plan = self.planner.analyze_and_make_plan(self.objective, context)
 
-        print('PLAN: ', self.plan)
+        print('PLAN: \n', self.plan)
