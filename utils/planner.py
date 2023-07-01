@@ -26,30 +26,23 @@ class Planner:
 
     @staticmethod
     def parse_plan(plan: str):
-        return plan
-        # steps = []
-        # temp_step = ""
-        # for line in plan.split('\n'):
-        #     if re.match(r"\d+\.", line):  # if the line starts with number and period (e.g., "1.")
-        #         if temp_step:  # if there is a previous step, add it to the list
-        #             steps.append(temp_step.strip())
-        #         temp_step = line  # start a new step
-        #     else:
-        #         temp_step += " " + line  # append the line to the current step
+        steps = []
+        temp_step = ""
+        for line in plan.split('\n'):
+            if re.match(r"\d+\.", line):  # if the line starts with number and period (e.g., "1.")
+                if temp_step:  # if there is a previous step, add it to the list
+                    steps.append(temp_step.strip())
+                temp_step = line  # start a new step
 
-        # # don't forget to add the last step
-        # steps.append(temp_step.strip())
-
-        # print('plan list: ', steps)
-        # exit()
+        return steps
 
 
     @staticmethod
     def role_message():
         msg = """
-        You are a expert coder, your job is to the best of your ability to establish a step by step detailed plan to perform the task given by the user.
+        You are a expert coder, your job is to the best of your ability to establish a step by step detailed plan to perform the task given, keep in mind that you are talking to another gpt agent.
         No need to write any tests, focus on the objective.
-        Make the plan parseable by a program as this plan will be parsed and handled by a gpt agent.
+        Make the plan parseable by a program by making sure that 1 line equals 1 step as this plan will be parsed and handled by a gpt agent.
         """.strip()
 
         return msg
