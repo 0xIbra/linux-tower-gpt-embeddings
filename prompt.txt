@@ -1,1 +1,2 @@
-Add a new "restart program" endpoints into linux-tower api that will allow restarting apache
+Add a new "restart program" endpoints into linux-tower api that will allow restarting apache.
+Do not write any unit tests.

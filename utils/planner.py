@@ -21,7 +21,7 @@ class Planner:
             {'role': 'user', 'content': msg}
         ]
 
-        raw_plan = GPTClient.prompt_gpt_api(messages)
+        raw_plan = GPTClient.prompt_gpt_api(messages, model='gpt-4')
 
         return Planner.parse_plan(raw_plan)
 

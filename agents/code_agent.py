@@ -54,7 +54,7 @@ class CodeAgent:
 
         gpt_response = self.step_planner.analyze_step(self.objective, context_text, step)
         gpt_response = gpt_response['choices'][0]
-        if gpt_response['finish_reason'] not in ['function_call']: # add 'stop' later ?
+        if gpt_response['finish_reason'] not in ['function_call']:
             raise Exception(f'gpt api finish reason unsupported: {gpt_response["finish_reason"]}\ngpt response: {gpt_response}')
 
         function_call_content = gpt_response['message']['function_call']
