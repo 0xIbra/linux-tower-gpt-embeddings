@@ -35,7 +35,8 @@ def main():
 
     code_data = []
     for file_path in files:
-        in_context_file_path = file_path.replace(f'{directory}/', '')
+        # in_context_file_path = file_path.replace(f'{directory}/', '')
+        in_context_file_path = file_path
 
         reader = CodeReader(file_path)
         code = reader.get_full_code()
