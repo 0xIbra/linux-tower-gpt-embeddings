@@ -13,16 +13,15 @@ def fwrite(file: str, data: str):
 
 
 def fedit(file: str, start_line: int, data: str):
-    # Read the contents of the file.
-    with open(file, 'r') as file:
-        lines = file.readlines()
+    start_line -= 1
 
-    # Insert the text.
+    with open(file, 'r') as f:
+        lines = f.readlines()
+
     lines.insert(start_line, data + "\n")
 
-    # Write the contents back to the file.
-    with open(file, 'w') as file:
-        file.writelines(lines)
+    with open(file, 'w') as f:
+        f.writelines(lines)
 
     return True
 
