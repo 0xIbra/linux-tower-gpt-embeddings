@@ -1,2 +1,1 @@
-Add a new "restart program" endpoints into linux-tower api that will allow restarting apache.
-Do not write any unit tests.
+Add a new "restart program" endpoints into linux-tower api that will allow restarting apache, implement this using the `dbus` library, do not use exec_shell.
