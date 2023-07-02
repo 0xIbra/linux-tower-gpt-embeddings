@@ -1,4 +1,4 @@
-from utils import ContextInjector, GPTClient, Planner
+from utils import ContextInjector, GPTClient, Planner, StepPlanner
 
 
 class CodeAgent:
@@ -12,9 +12,25 @@ class CodeAgent:
         self.objective = objective
         self.context_injector = ContextInjector()
         self.planner = Planner()
+        self.step_planner = StepPlanner()
 
     def run(self):
         context = self.context_injector.get_context_for_prompt(self.objective, max_context_items=20)
-        self.plan = self.planner.analyze_and_make_plan(self.objective, context)
+        context_text = "\n".join(context['code'].to_list())
 
-        print('PLAN: \n', self.plan)
+        self.plan = self.planner.analyze_and_make_plan(self.objective, context_text)
+
+        for step in self.plan:
+            self.__execute_step(step)
+
+    def __execute_step(self, step: str):
+        _temp = step.lower()
+        if 'open the file' in _temp:
+            return
+
+        # todo: 
+
+        context = self.context_injector.get_context_for_prompt(step, max_context_items=15)
+        context_text = "\n".join(context['code'].to_list())
+
+        step_plan = self.step_planner.analyze_step(self.objective, context_text, step)

@@ -1,6 +1,7 @@
 from utils import GPTClient
 import re
 
+
 class Planner:
 
     def analyze_and_make_plan(self, objective: str, context: str):
@@ -40,7 +41,7 @@ class Planner:
     @staticmethod
     def role_message():
         msg = """
-        You are a expert coder, your job is to the best of your ability to establish a step by step detailed plan to perform the task given, keep in mind that you are talking to another gpt agent.
+        You are an expert coder, your job is to the best of your ability to establish a step by step detailed plan to perform the task given, keep in mind that you are talking to another gpt agent.
         No need to write any tests, focus on the objective.
         Make the plan parseable by a program by making sure that 1 line equals 1 step as this plan will be parsed and handled by a gpt agent.
         """.strip()
