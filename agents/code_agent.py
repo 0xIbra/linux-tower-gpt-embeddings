@@ -2,6 +2,7 @@ from utils import ContextInjector, GPTClient, Planner, StepPlanner
 from utils.gpt_functions import AVAILABLE_FUNCTIONS
 from loguru import logger
 from halo import Halo
+import json
 
 
 logger.remove()
@@ -27,6 +28,10 @@ class CodeAgent:
 
         self.plan = self.planner.analyze_and_make_plan(self.objective, context_text)
 
+        # temporary write plan to file
+        with open('plan.txt', 'w') as f:
+            f.write('\n\n'.join(self.plan))
+
         for step in self.plan:
             spinner = Halo(text=step, spinner='dots')
             spinner.start()
@@ -44,8 +49,6 @@ class CodeAgent:
         if 'open the file' in _temp:
             return True
 
-        # todo: 
-
         context = self.context_injector.get_context_for_prompt(step, max_context_items=15)
         context_text = "\n".join(context['code'].to_list())
 
@@ -54,7 +57,10 @@ class CodeAgent:
         if gpt_response['finish_reason'] not in ['function_call']: # add 'stop' later ?
             raise Exception(f'gpt api finish reason unsupported: {gpt_response["finish_reason"]}\ngpt response: {gpt_response}')
 
-        function_to_call = gpt_response['message']['function_call']
-        print('func to call: ', function_to_call)
-        exit()
+        function_call_content = gpt_response['message']['function_call']
+        function_name = function_call_content['name']
+        function_args = json.loads(function_call_content['arguments'])
 
+        function_to_call = AVAILABLE_FUNCTIONS[function_name]
+
+        return function_to_call(**function_args)
