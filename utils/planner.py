@@ -1,4 +1,5 @@
 from utils import GPTClient
+from utils.gpt_functions import FUNCTIONS
 import re
 
 
@@ -21,7 +22,7 @@ class Planner:
             {'role': 'user', 'content': msg}
         ]
 
-        raw_plan = GPTClient.prompt_gpt_api(messages, model='gpt-4')
+        raw_plan = GPTClient.prompt_gpt_api(messages, model='gpt-4', functions=FUNCTIONS)
 
         return Planner.parse_plan(raw_plan)
 
@@ -41,8 +42,9 @@ class Planner:
     @staticmethod
     def role_message():
         msg = """
-        You are an expert coder, your job is to the best of your ability to establish a step by step detailed plan to perform the task given, keep in mind that you are talking to another gpt agent.
-        No need to write any tests, focus on the objective.
+        You are an expert coder, your job is to the best of your ability to establish a step by step detailed plan to perform the task given taking into account the available functions which represent the actions possible, keep in mind that you are talking to another gpt agent.
+        Try to include all the code of 1 file into one dedicated step, do not make multiple steps for the same file.
+        No need to write new tests, ignore them.
         Make the plan parseable by a program by making sure that 1 line equals 1 step as this plan will be parsed and handled by a gpt agent.
         """.strip()
 
