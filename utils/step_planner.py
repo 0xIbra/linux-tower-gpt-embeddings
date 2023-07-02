@@ -4,15 +4,19 @@ from utils.gpt_functions import FUNCTIONS
 
 class StepPlanner:
 
-    def analyze_step(self, objective: str, context: str, step: str):
+    def analyze_step(self, objective: str, context: str, previous: str, step: str):
         msg = f"""
         Main objective:
         {objective}
 
         Context:
         {context}
+
+        Previous tasks:
+        {previous}
+
         ---
-        {step}
+        Current task: {step}
         """.strip()
 
         messages = [
@@ -20,13 +24,17 @@ class StepPlanner:
             {'role': 'user', 'content': msg}
         ]
 
-        
-        return GPTClient.prompt_gpt_api(messages, functions=FUNCTIONS, return_content=False)
+        # model = 'gpt-4'
+        model = 'gpt-3.5-turbo-16k'
+
+        return GPTClient.prompt_gpt_api(messages, model=model, functions=FUNCTIONS, return_content=False)
 
     @staticmethod
     def role_message():
         msg = """
         You are an expert coder, your job is to the best of your ability perform the task above taking into consideration the available functions to you.
+        You can update a file with the "fwrite" function that is available to you.
+        If you are unable to perform a task, state why and how can it be resolved.
         """.strip()
 
         return msg
