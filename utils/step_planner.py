@@ -20,11 +20,8 @@ class StepPlanner:
             {'role': 'user', 'content': msg}
         ]
 
-        print('prompt: \n', msg)
-        print('\n\n')
-        response = GPTClient.prompt_gpt_api(messages, functions=FUNCTIONS, return_content=False)
-        print(response)
-        exit()
+        
+        return GPTClient.prompt_gpt_api(messages, functions=FUNCTIONS, return_content=False)
 
     @staticmethod
     def role_message():

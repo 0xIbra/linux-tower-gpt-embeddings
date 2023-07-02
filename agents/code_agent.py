@@ -1,4 +1,11 @@
 from utils import ContextInjector, GPTClient, Planner, StepPlanner
+from utils.gpt_functions import AVAILABLE_FUNCTIONS
+from loguru import logger
+from halo import Halo
+
+
+logger.remove()
+logger.add('code_agent.log', format="{time} {level} {message}", level="INFO", diagnose=False)
 
 
 class CodeAgent:
@@ -21,16 +28,33 @@ class CodeAgent:
         self.plan = self.planner.analyze_and_make_plan(self.objective, context_text)
 
         for step in self.plan:
-            self.__execute_step(step)
+            spinner = Halo(text=step, spinner='dots')
+            spinner.start()
+
+            execution_result = self.__execute_step(step)
+            if execution_result:
+                spinner.succeed(step)
+                logger.info(step)
+            else:
+                spinner.fail(step)
+                logger.error(step)
 
     def __execute_step(self, step: str):
         _temp = step.lower()
         if 'open the file' in _temp:
-            return
+            return True
 
         # todo: 
 
         context = self.context_injector.get_context_for_prompt(step, max_context_items=15)
         context_text = "\n".join(context['code'].to_list())
 
-        step_plan = self.step_planner.analyze_step(self.objective, context_text, step)
+        gpt_response = self.step_planner.analyze_step(self.objective, context_text, step)
+        gpt_response = gpt_response['choices'][0]
+        if gpt_response['finish_reason'] not in ['function_call']: # add 'stop' later ?
+            raise Exception(f'gpt api finish reason unsupported: {gpt_response["finish_reason"]}\ngpt response: {gpt_response}')
+
+        function_to_call = gpt_response['message']['function_call']
+        print('func to call: ', function_to_call)
+        exit()
+

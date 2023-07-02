@@ -3,7 +3,7 @@ import sys
 
 
 with open('prompt.txt', 'r') as f:
-    prompt = f.read()
+    prompt = f.read().strip()
 
 agent = CodeAgent(prompt)
 agent.run()
