@@ -33,8 +33,7 @@ class StepPlanner:
     def role_message():
         msg = """
         You are an expert coder, your job is to the best of your ability perform the task above taking into consideration the available functions to you.
-        You can update a file with the "fwrite" function that is available to you.
-        If you are unable to perform a task, state why and how can it be resolved.
+        Remember that you are expected to perform the task with functions.
         """.strip()
 
         return msg

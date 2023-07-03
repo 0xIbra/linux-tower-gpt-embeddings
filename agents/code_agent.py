@@ -72,6 +72,9 @@ class CodeAgent:
             raise Exception(f'gpt api finish reason unsupported: {gpt_response["finish_reason"]}\ngpt response: {gpt_response}')
 
         function_call_content = gpt_response['message']['function_call']
+        # print('\n')
+        # print(function_call_content)
+        # print('\n')
         # print('function call: ', function_call_content)
         function_name = function_call_content['name']
         function_args = json.loads(function_call_content['arguments'])

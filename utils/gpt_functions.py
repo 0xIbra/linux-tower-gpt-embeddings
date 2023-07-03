@@ -16,12 +16,13 @@ def fedit(file: str, start_line: int, data: str):
     start_line -= 1
 
     with open(file, 'r') as f:
+        # lines = f.read().split('\n')
         lines = f.readlines()
 
-    lines.insert(start_line, data + "\n")
+    lines.insert(start_line, '\n' + data + '\n')
 
     with open(file, 'w') as f:
-        f.writelines(lines)
+        f.write('\n'.join(lines))
 
     return True
 
@@ -38,19 +39,19 @@ FUNCTIONS = [
             },
             'required': ['file', 'data']
         }
+    },
+    {
+        'name': 'fedit',
+        'description': 'Edit file, add code into an existing file on a given line.',
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'file': {'type': 'string', 'description': 'File path to be edited'},
+                'start_line': {'type': 'integer', 'description': 'The line number after which the text should be inserted in the file.'},
+                'data': {'type': 'string', 'description': 'Text data to be inserted in the file.'}
+            }
+        }
     }
-    # {
-    #     'name': 'fedit',
-    #     'description': 'Insert text into an existing file after a given line.',
-    #     'parameters': {
-    #         'type': 'object',
-    #         'properties': {
-    #             'file': {'type': 'string', 'description': 'File path to be edited'},
-    #             'start_line': {'type': 'integer', 'description': 'The line number after which the text should be inserted in the file.'},
-    #             'data': {'type': 'string', 'description': 'Text data to be inserted in the file.'}
-    #         }
-    #     }
-    # }
 ]
 
 AVAILABLE_FUNCTIONS = {
