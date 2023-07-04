@@ -49,7 +49,8 @@ FUNCTIONS = [
                 'file': {'type': 'string', 'description': 'File path to be edited'},
                 'start_line': {'type': 'integer', 'description': 'The line number after which the text should be inserted in the file.'},
                 'data': {'type': 'string', 'description': 'Text data to be inserted in the file.'}
-            }
+            },
+            'required': ['file', 'start_line', 'data']
         }
     }
 ]
