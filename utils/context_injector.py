@@ -26,8 +26,8 @@ class ContextInjector:
         """
 
         query_embedding = get_embedding(prompt_query, engine=EMBEDDING_MODEL)
-        # self.__df['similarities'] = self.__df['code_embedding'].apply(lambda x: cosine_similarity(x, query_embedding))
-        self.df['similarities'] = self.df['code_summarization_embedding'].apply(lambda x: cosine_similarity(x, query_embedding))
+        self.df['similarities'] = self.df['code_embedding'].apply(lambda x: cosine_similarity(x, query_embedding))
+        # self.df['similarities'] = self.df['code_summarization_embedding'].apply(lambda x: cosine_similarity(x, query_embedding))
 
         return self.df.sort_values('similarities', ascending=False).head(max_context_items)
 
