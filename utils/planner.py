@@ -15,6 +15,7 @@ class Planner:
 
         ---
         Analyze the objective above and make a step by step plan of all actions required in all the code files to achieve the end result.
+        Do not write write any unit tests or functional tests.
         """.strip()
 
         messages = [
@@ -38,13 +39,11 @@ class Planner:
 
         return steps
 
-
     @staticmethod
     def role_message():
         msg = """
         You are an expert coder, your job is to the best of your ability to establish a step by step detailed plan to perform the task given taking into account the available functions which represent the actions possible, keep in mind that you are talking to another gpt agent.
-        Try to include all the code of 1 file into one dedicated step, do not make multiple steps for the same file.
-        No need to write new tests, ignore them.
+        Try to include all the instructions of 1 file into one dedicated step, do not make multiple steps instructions for the same file.
         Make the plan parseable by a program by making sure that 1 line equals 1 step as this plan will be parsed and handled by a gpt agent.
         """.strip()
 
