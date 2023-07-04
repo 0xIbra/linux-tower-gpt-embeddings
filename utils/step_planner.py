@@ -24,8 +24,8 @@ class StepPlanner:
             {'role': 'user', 'content': msg}
         ]
 
-        # model = 'gpt-4'
-        model = 'gpt-3.5-turbo-16k'
+        model = 'gpt-4'
+        # model = 'gpt-3.5-turbo-16k'
 
         return GPTClient.prompt_gpt_api(messages, model=model, functions=FUNCTIONS, return_content=False)
 
