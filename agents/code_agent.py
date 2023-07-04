@@ -24,8 +24,8 @@ class CodeAgent:
         self.previous_steps = []
 
     def run(self):
-        context = self.context_injector.get_context_for_prompt(self.objective, max_context_items=20)
-        context_text = "\n".join(context['code'].to_list())
+        context = self.context_injector.get_context_for_prompt(self.objective, max_context_items=15)
+        context_text = "\n\n---".join(context['code'].to_list())
 
         self.plan = self.planner.analyze_and_make_plan(self.objective, context_text)
 
@@ -54,9 +54,14 @@ class CodeAgent:
         _temp = step.lower()
         if 'open the file' in _temp:
             return True
-        
-        context = self.context_injector.get_context_for_prompt(step, max_context_items=10)
-        context_text = "\n".join(context['code'].to_list())
+
+        # retrieve code for files that relate to this specific step
+        context = self.context_injector.get_context_for_prompt(step, max_context_items=1)
+        # context_text = "\n".join(context['code'].to_list())
+        files = context['filepath'].to_list()
+
+        with open(files[0], 'r') as f:
+            context_text = f.read()
 
         previous_steps_text = "\n".join(self.previous_steps)
 
