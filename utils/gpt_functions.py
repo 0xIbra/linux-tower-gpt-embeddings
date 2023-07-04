@@ -16,8 +16,7 @@ def fedit(file: str, start_line: int, data: str):
     start_line -= 1
 
     with open(file, 'r') as f:
-        # lines = f.read().split('\n')
-        lines = f.readlines()
+        lines = f.read().split('\n')
 
     lines.insert(start_line, '\n' + data + '\n')
 
@@ -42,7 +41,7 @@ FUNCTIONS = [
     },
     {
         'name': 'fedit',
-        'description': 'Edit file, add code into an existing file on a given line.',
+        'description': 'Edit file, add code into an existing file on a given line. When using multiple times for same file, remember to increase the next lines as file gets bigger.',
         'parameters': {
             'type': 'object',
             'properties': {
